@@ -14,7 +14,7 @@ export default function ButtonAppBar() {
         <Container maxWidth='md'>
         <Toolbar>
             <Groups3SharpIcon sx={{ mr: 2}}/>
-          <Typography variant="h5" component="a" href='/signin' sx={{
+          <Typography variant="h5" component="a" href='/home' sx={{
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
