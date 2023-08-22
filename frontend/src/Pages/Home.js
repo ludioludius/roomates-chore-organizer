@@ -1,7 +1,9 @@
 import { Container, Typography, Box, Fab, Paper } from '@mui/material'
 import ButtonAppBar from '../components/ButtonAppBar'
 
-const features = ["feature1", 'feature2', 'feature3']
+const features = [ {name: 'Track your spending' , description: 'Keep track of who spent how much money on what, so that everyone spends their fair share' },
+                   {name: 'Chore Scheduling' , description: 'Get rid of your physical chore chart for a more flexible and convenient digital version' },
+                   {name: 'Chore Assignment' , description: 'Create a plan to split up the work and keep track of progress to keep your place clean and tidy' }]
 
 const Home = () => {
     return (
@@ -46,8 +48,8 @@ return (
     return (
         <Paper  elevation={4}>
         <Box sx={{ m: 2 }}>
-        <Typography variant='h4'> {feature} </Typography> 
-        <Typography variant='h5' sx={{ mt: 3 }}> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</Typography> 
+        <Typography variant='h4'> {feature.name} </Typography> 
+        <Typography variant='h5' sx={{ mt: 3 }}> {feature.description} </Typography> 
         </Box>
         </Paper>
         )
