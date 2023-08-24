@@ -27,7 +27,7 @@ return (
 <Container maxWidth='md'>
     <Typography variant="h4" align='center' px={10} pt={10} pb={5}> Simplify living with roomates: Manage chores and finances effortlessly with chorify. </Typography>
         <Box display="flex" justifyContent="center" alignItems="center" pb={5}>
-            <Fab variant="extended" size="large" color="primary" href='/signin'> Get Started. It's Free </Fab>
+            <Fab variant="extended" size="large" color="primary" href='/signup'> Get Started. It's Free </Fab>
         </Box>
 </Container>            
 </Box>

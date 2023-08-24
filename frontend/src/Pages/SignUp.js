@@ -12,12 +12,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 
-export default function SignIn() {
+export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
+      name: data.get('Name'),
+      userName: data.get('User Name'),      
       password: data.get('password'),
     });
   };
@@ -36,16 +37,26 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign In
+            Sign up
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
+              id="Name"
+              label="Name"
+              name="Name"
+              autoComplete="Name"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="User Name"
               label="User Name"
-              name="User Namel"
+              name="User Name"
               autoComplete="User Name"
               autoFocus
             />            
@@ -69,7 +80,7 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign Up
             </Button>
             <Grid container>
               {/* <Grid item xs>
@@ -78,8 +89,8 @@ export default function SignIn() {
                 </Link>
               </Grid> */}
               <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/signin" variant="body2">
+                  {"Already have an account? Sign In"}
                 </Link>
               </Grid>
             </Grid>
