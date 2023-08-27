@@ -10,20 +10,55 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import axios from 'axios';
+import { useSignup } from '../hooks/useSignUp';
+import ButtonAppBar from '../components/ButtonAppBar';
+
+// API address hardcoded temporarily
 
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+
+
+  const {signup, error, isLoading} = useSignup()
+
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       name: data.get('Name'),
-      userName: data.get('User Name'),      
+      username: data.get('User Name'),      
       password: data.get('password'),
     });
+
+    await signup(data.get('Name'), 
+                 data.get('User Name'),
+                 data.get('password'))
+
+    // axios.post('http://localhost:3001/api/signup', {
+    //   name: data.get('Name'),
+    //   username: data.get('User Name'),      
+    //   password: data.get('password'),
+    // })
+    // .then((response) => {
+    //   console.log(response)
+    //   // redirect to different page?
+    //   window.location.replace(
+    //     "http://localhost:3000/createjoinroom",
+    //   );
+    // })
+    // .catch((error) => {
+    //   console.log(error.response.data.error)
+    //   //TODO include ui to alert user
+
+    // })
+    
   };
 
   return (
+    <>
+      <ButtonAppBar />
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -78,6 +113,7 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={isLoading}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
@@ -96,6 +132,8 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
+        <Typography>{error}</Typography>
       </Container>
+      </>
   );
 }

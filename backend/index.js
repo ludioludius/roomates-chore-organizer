@@ -2,11 +2,14 @@ const express =  require('express')
 const app = express()
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const cors = require('cors')
+const jwt = require('jsonwebtoken')
 
 
 require('dotenv').config()
 
 app.use(express.json())
+app.use(cors())
 
 
 
@@ -33,7 +36,7 @@ mongoose.connect(process.env.MONGODB_URI)
 //     mongoose.connection.close()
 // })
 
-app.get('/', (req, res) => {
+app.get('/api/tasks', (req, res) => {
     Task.find({}).then(tasks => {
         res.json(tasks)
       })
@@ -41,9 +44,9 @@ app.get('/', (req, res) => {
 
 // creates a user unasigned to a room
 // this should probably check if user needs to added to a room or not 
-app.post('/api/user', async (req, res) => {
+app.post('/api/signup', async (req, res) => {
     console.log(req.body)
-    const { username, name, password } = req.body
+    const { name, username, password } = req.body
 
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
@@ -54,9 +57,54 @@ app.post('/api/user', async (req, res) => {
         passwordHash,
     })
 
-    const savedUser = await user.save()
+    user.save()
+    .then((response) => {
+        console.log(response)
+        const userForToken = {
+            username: user.username,
+            id: user._id,
+          }
+        
+          const token = jwt.sign(userForToken, process.env.SECRET)
 
-    res.status(201).json(savedUser)
+          res
+        .status(200)
+        .send({ token, username: user.username, name: user.name })
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).json({error: "username must me unique"})
+    })
+})
+
+app.post('/api/signin', async (req, res) => {
+    //check if user creds is in data base, and return a token
+    const {username, password} = req.body
+    console.log(username, password)
+
+    const user = await User.findOne({ username })
+    const passwordCorrect = user === null? 
+    false: await bcrypt.compare(password, user.passwordHash)
+
+    if (!user || !passwordCorrect) {
+        return res.status(401).json({
+          error: 'invalid username or password'
+        })
+      }
+    
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+    
+      const token = jwt.sign(userForToken, process.env.SECRET)
+    
+      res
+        .status(200)
+        .send({ token, username: user.username, name: user.name })
+
+
+
 })
 
 // constraint: this is only called when the user has no room associated, ie just created a new account

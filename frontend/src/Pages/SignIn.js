@@ -10,6 +10,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import axios from 'axios';
+import { AppBar } from '@mui/material';
+import ButtonAppBar from '../components/ButtonAppBar';
 
 
 export default function SignIn() {
@@ -17,12 +20,22 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
+      username: data.get('User Name'),
       password: data.get('password'),
     });
+    axios.post('http://localhost:3001/api/signin', { "username": data.get('User Name'), "password": data.get('password')})
+    .then((response) => {
+      console.log('successfully logged in')
+      console.log(response.status)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   };
 
   return (
+    <>
+    <ButtonAppBar />
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -45,7 +58,7 @@ export default function SignIn() {
               fullWidth
               id="User Name"
               label="User Name"
-              name="User Namel"
+              name="User Name"
               autoComplete="User Name"
               autoFocus
             />            
@@ -86,5 +99,6 @@ export default function SignIn() {
           </Box>
         </Box>
       </Container>
+      </>
   );
 }
