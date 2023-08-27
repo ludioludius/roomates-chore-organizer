@@ -13,24 +13,31 @@ import Container from '@mui/material/Container';
 import axios from 'axios';
 import { AppBar } from '@mui/material';
 import ButtonAppBar from '../components/ButtonAppBar';
+import { useSignin } from '../hooks/useSignIn';
 
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const {signin, error, isLoading} = useSignin()  
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       username: data.get('User Name'),
       password: data.get('password'),
     });
-    axios.post('http://localhost:3001/api/signin', { "username": data.get('User Name'), "password": data.get('password')})
-    .then((response) => {
-      console.log('successfully logged in')
-      console.log(response.status)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+    // axios.post('http://localhost:3001/api/signin', { "username": data.get('User Name'), "password": data.get('password')})
+    // .then((response) => {
+    //   console.log('successfully logged in')
+    //   console.log(response.status)
+    // })
+    // .catch((error) => {
+    //   console.log(error)
+    // })
+
+    await signin(data.get('Name'), 
+    data.get('User Name'),
+    data.get('password'))
   };
 
   return (
@@ -81,6 +88,7 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={isLoading}
             >
               Sign In
             </Button>
@@ -99,6 +107,7 @@ export default function SignIn() {
           </Box>
         </Box>
       </Container>
+      <Typography>{error}</Typography>
       </>
   );
 }

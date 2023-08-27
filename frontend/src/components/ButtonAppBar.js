@@ -6,8 +6,11 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Groups3SharpIcon from '@mui/icons-material/Groups3Sharp';
 import { Container } from '@mui/material';
+import { useLogout } from '../hooks/useLogout';
 
 export default function ButtonAppBar() {
+  const { logout } = useLogout()
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -27,6 +30,7 @@ export default function ButtonAppBar() {
           <Button color="inherit" href='/signin'>Sign In</Button>
           <Button color="inherit">Home</Button>
           <Button color="inherit">FAQs</Button>
+          <Button color="inherit" onClick={() => logout()}> Log out </Button>
         </Toolbar>
         </Container>
       </AppBar>
