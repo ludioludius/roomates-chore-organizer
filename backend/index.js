@@ -17,6 +17,7 @@ app.use(cors())
 const Task = require('./models/task')
 const User = require('./models/user')
 const Room = require('./models/room')
+const e = require('cors')
 
 
 mongoose.set('strictQuery', false)
@@ -42,6 +43,50 @@ app.get('/api/tasks', (req, res) => {
       })
 })
 
+app.delete('/api/tasks/:id', (req, res) => {
+    const id = req.params.id
+    Task.findByIdAndDelete(id)
+    .then(response => {
+        console.log(response)
+        res.status(204).send()})
+    .catch(error => {
+        console.log(error)
+        res.status(404).send()})
+})
+
+app.post('/api/tasks', (req, res) => {
+    const {name, description, frequency} =  req.body
+    console.log(req.body)
+    console.log(name, description, frequency)
+    const newTask = new Task({name, description, frequency})
+
+    newTask.save()
+    .then(response => {
+        res.status(201).json(newTask)
+        console.log(response)
+    })
+    .catch(e => {
+        res.json({error: "problem creating the new task"})
+        console.log(e)
+    })
+})
+
+app.put('/api/users/', (request, response) => {
+    console.log('in put controller')
+    const { username, name, password, room } = request.body
+    console.log( username, name, password, room)
+  
+    User.findOneAndUpdate({username: username}, {room: Number(room)}, {
+        returnOriginal: false
+      })
+      .then(updatedNote => {
+        response.json(updatedNote)
+      })
+      .catch(error => console.log(error))
+  })
+
+//endpoint for adding tasks to a room
+
 // creates a user unasigned to a room
 // this should probably check if user needs to added to a room or not 
 app.post('/api/signup', async (req, res) => {
@@ -55,6 +100,7 @@ app.post('/api/signup', async (req, res) => {
         username,
         name,
         passwordHash,
+        room: ""
     })
 
     user.save()
@@ -69,7 +115,7 @@ app.post('/api/signup', async (req, res) => {
 
           res
         .status(200)
-        .send({ token, username: user.username, name: user.name })
+        .send({ token, username: user.username, name: user.name, room: user.room, id: user._id})
     })
     .catch((error) => {
         console.log(error)
@@ -101,7 +147,7 @@ app.post('/api/signin', async (req, res) => {
     
       res
         .status(200)
-        .send({ token, username: user.username, name: user.name })
+        .send({ token, username: user.username, name: user.name})
 
 
 

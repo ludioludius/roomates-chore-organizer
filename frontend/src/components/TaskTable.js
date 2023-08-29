@@ -6,17 +6,26 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Button, Typography } from '@mui/material';
+import { Button, TextField, Typography, Box } from '@mui/material';
 
 
 
-export default function TaskTable() {
+export default function TaskTable(props) {
 
     //include effect and state to pull task data from DB
-    const [tasks, setTasks] = useState([])
+    const tasks = props.tasks
+    const setTasks = props.setTasks
 
-    const deleteTask = () => {
+    const deleteTask = (id) => {
         console.log('send request to change data then change state')
+        axios.delete(`http://localhost:3001/api/tasks/${id}`)
+        .then(response => {
+          setTasks(tasks.filter((task) => task.id !== id))
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
 
     const fetchTaskData = () => {
@@ -35,7 +44,7 @@ export default function TaskTable() {
 
     return (
       <>
-        <Typography>Recent Orders</Typography>
+        <Typography> Tasks </Typography>
         <Table size="small">
 
           <TableHead>
@@ -57,7 +66,7 @@ export default function TaskTable() {
                 <TableCell>{task.id}</TableCell>
                 <TableCell>{task.name}</TableCell>
                 <TableCell> 
-                    <Button onClick={() => deleteTask()}>
+                    <Button onClick={() => deleteTask(task.id)}>
                         Delete task
                     </Button>
                 </TableCell>
@@ -65,6 +74,7 @@ export default function TaskTable() {
               </TableRow>
             ))}
           </TableBody>
+           
 
         </Table>
       </>

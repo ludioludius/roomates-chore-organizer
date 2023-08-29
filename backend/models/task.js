@@ -5,12 +5,16 @@ const taskSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+      type: String,
+      required: true
+    },
     frequency: Number,
 
-    room: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Room'
-    }
+    // room: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Room'
+    // }
 })
 
 taskSchema.set('toJSON', {

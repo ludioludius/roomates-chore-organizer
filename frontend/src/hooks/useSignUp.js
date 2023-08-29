@@ -18,7 +18,7 @@ export const useSignup = () => {
     })
     .then((response) => {
       const json = JSON.stringify(response.data)
-      console.log('response from hoook')
+      console.log('response from hoook', response.data)
       // store response data in the browser (includes token)
       localStorage.setItem('user', json)
 

@@ -21,7 +21,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Groups3SharpIcon from '@mui/icons-material/Groups3Sharp';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import { Button, ListItemButton, ListItemIcon, ListItemText, TextField, Select, MenuItem } from '@mui/material';
+import { Button, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
 // import { mainListItems, secondaryListItems } from './listItems';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
@@ -93,33 +93,15 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function AddTask() {
   const { logout } = useLogout()
   const { user } = useAuthContext()
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const [tasks, setTasks] = useState([])
-
-  var frequency = null
 
 // console.log(JSON.parse(user))
-
-const handleSubmit = (event) => {
-  event.preventDefault()
-  const data = new FormData(event.currentTarget);
-  console.log(data.get('Task'), data.get('Description'), data.get('Frequency'))
-
-  axios.post('http://localhost:3001/api/tasks', {name: data.get('Task'), description: data.get('Description'), frequency: data.get('frequency')})
-  .then((response) => {
-    console.log(response.data)
-    setTasks(tasks.concat(response.data))
-  })
-  .catch((e) => {
-    console.log(e)
-  })
-}
 
 
   return (
@@ -196,7 +178,7 @@ const handleSubmit = (event) => {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <ListItemButton href='/addTasks'>
+            <ListItemButton href='/addtasks'>
               <ListItemIcon>
                 <TaskAltIcon/>
               </ListItemIcon>
@@ -260,63 +242,34 @@ const handleSubmit = (event) => {
               {/* Recent Orders CHANGE TO TASKS */}
 
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <TaskTable tasks={tasks} setTasks={setTasks}/>
+                  <TaskTable />
                 </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Typography> Add a task</Typography>
-                  <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                <TextField
-              variant='standard'
+              </Grid> */}
+
+            <Box component="form" onSubmit={()=> {}} noValidate sx={{ mt: 1 }}>
+            <TextField
               margin="normal"
               required
               fullWidth
-              id="Task"
-              label="Task"
-              name="Task"
-              autoComplete="Task"
+              id="Name"
+              label="Name"
+              name="Name"
+              autoComplete="Name"
               autoFocus
-              />
-              <TextField
-              variant='standard'
+            />
+            <TextField
               margin="normal"
               required
               fullWidth
-              id="Description"
-              label="Description of the task"
-              name="Description"
-              autoComplete="Description"
-              />
-              <TextField
-              id="frequency"
-              select
-              label="Frequency"
-              name='Frequency'
-              defaultValue= {7}
-              helperText="Please select the frequency of the task"
-              variant="standard"
-              fullWidth>
-          
-            <MenuItem value={7}>
-              weekly
-            </MenuItem>
-            <MenuItem value={14}>
-              bi-weekly
-            </MenuItem>
-            <MenuItem value={30}>
-              monthly
-            </MenuItem>
-        </TextField>
-        <Button variant='outlined' type='submit' sx={{mt: 2}}> Add task</Button>
-
-
-            </Box>
-                </Paper>
-              </Grid>
-              
+              id="User Name"
+              label="User Name"
+              name="User Name"
+              autoComplete="User Name"
+              autoFocus
+            />    
+            </Box>       
 
               
             </Grid>

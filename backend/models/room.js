@@ -8,7 +8,7 @@ const roomSchema = mongoose.Schema({
     members: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'User'
+          ref: 'Task'
         }
     ]
 })

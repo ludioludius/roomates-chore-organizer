@@ -12,8 +12,7 @@ const userSchema = mongoose.Schema({
   passwordHash: String,
   room:
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Room'
+      type: String,
     }
 })
 
