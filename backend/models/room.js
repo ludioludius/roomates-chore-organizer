@@ -3,14 +3,19 @@ const mongoose = require('mongoose')
 const roomSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true
     },
-    members: [
+    tasks: [
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Task'
         }
-    ]
+    ],
+    // members: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User'
+    //   }
+    // ]
 })
 
 roomSchema.set('toJSON', {

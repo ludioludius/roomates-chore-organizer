@@ -7,7 +7,7 @@ export const useSignup = () => {
   const [isLoading, setIsLoading] = useState(null)
   const { dispatch } = useAuthContext()
 
-  const signup = async (name, username, password) => {
+  const signup = async (name, username, password, roomcode) => {
     setIsLoading(true)
     setError(null)
 
@@ -15,6 +15,7 @@ export const useSignup = () => {
       name: name,
       username: username,      
       password: password,
+      roomcode: roomcode
     })
     .then((response) => {
       const json = JSON.stringify(response.data)

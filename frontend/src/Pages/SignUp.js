@@ -30,11 +30,13 @@ export default function SignUp() {
       name: data.get('Name'),
       username: data.get('User Name'),      
       password: data.get('password'),
+      roomcode: data.get('Room Code')
     });
 
     await signup(data.get('Name'), 
                  data.get('User Name'),
-                 data.get('password'))
+                 data.get('password'),
+                 data.get('Room Code'))
 
     // axios.post('http://localhost:3001/api/signup', {
     //   name: data.get('Name'),
@@ -93,7 +95,6 @@ export default function SignUp() {
               label="User Name"
               name="User Name"
               autoComplete="User Name"
-              autoFocus
             />            
             <TextField
               margin="normal"
@@ -104,6 +105,15 @@ export default function SignUp() {
               type="password"
               id="password"
               autoComplete="current-password"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="Room Code"
+              label="Room Code"
+              type="Room Code"
+              id="Room Code"
             />
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

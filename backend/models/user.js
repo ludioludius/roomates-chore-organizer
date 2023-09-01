@@ -10,9 +10,10 @@ const userSchema = mongoose.Schema({
   },
   name: String,
   passwordHash: String,
-  room:
+  roomcode:
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Room'
     }
 })
 
@@ -21,6 +22,8 @@ userSchema.set('toJSON', {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v
+      //added to hide password hash
+      delete returnedObject.passwordHash
     }
   })
 

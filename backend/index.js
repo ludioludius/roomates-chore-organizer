@@ -88,24 +88,50 @@ app.put('/api/users/', (request, response) => {
 //endpoint for adding tasks to a room
 
 // creates a user unasigned to a room
-// this should probably check if user needs to added to a room or not 
+// this should probably check if user needs to added to a room or not
+// generates new room code if room code is empty
+// room code is either empty, invalid, or valid
 app.post('/api/signup', async (req, res) => {
     console.log(req.body)
-    const { name, username, password } = req.body
+    var { name, username, password, roomcode } = req.body
 
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    const valid = await Room.findOne({_id: roomcode})
+
+    if (roomcode === "") {
+        //case where roomcode is invalid
+        var room = new Room()
+        roomcode = room._id
+         console.log("ROOM CREATED", room)
+    } else if (!valid) {
+        // return error
+        return res.status(400).send({
+            error: 'invalid room code'
+         })
+    } else {
+        // case where roomcode is valid
+        var room = await Room.findOne({_id: roomcode})
+    }
 
     const user = new User({
         username,
         name,
         passwordHash,
-        room: ""
+        roomcode
     })
 
+    await room.save()
+
+    console.log(user)
+
     user.save()
-    .then((response) => {
+    .then( async (response) => {
         console.log(response)
+
+
+
         const userForToken = {
             username: user.username,
             id: user._id,
@@ -115,7 +141,7 @@ app.post('/api/signup', async (req, res) => {
 
           res
         .status(200)
-        .send({ token, username: user.username, name: user.name, room: user.room, id: user._id})
+        .send({ token, username: user.username, name: user.name, roomcode: user.roomcode, id: user._id})
     })
     .catch((error) => {
         console.log(error)
