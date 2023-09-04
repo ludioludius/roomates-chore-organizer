@@ -110,8 +110,10 @@ const handleSubmit = (event) => {
   event.preventDefault()
   const data = new FormData(event.currentTarget);
   console.log(data.get('Task'), data.get('Description'), data.get('Frequency'))
+  console.log(JSON.parse(user).roomcode)
 
-  axios.post('http://localhost:3001/api/tasks', {name: data.get('Task'), description: data.get('Description'), frequency: data.get('frequency')})
+  axios.post('http://localhost:3001/api/tasks', {name: data.get('Task'), description: data.get('Description'), frequency: data.get('Frequency'),
+                                                  roomcode: JSON.parse(user).roomcode})
   .then((response) => {
     console.log(response.data)
     setTasks(tasks.concat(response.data))
@@ -262,7 +264,10 @@ const handleSubmit = (event) => {
 
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <TaskTable tasks={tasks} setTasks={setTasks}/>
+                  {user &&
+                    <TaskTable tasks={tasks} setTasks={setTasks} roomcode={JSON.parse(user).roomcode}/>
+                   }       
+                  
                 </Paper>
               </Grid>
               <Grid item xs={12}>
