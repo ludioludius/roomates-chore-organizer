@@ -11,7 +11,7 @@ export const useSignup = () => {
     setIsLoading(true)
     setError(null)
 
-    axios.post('http://localhost:3001/api/signup', {
+    axios.post('http://localhost:3001/api/users/signup', {
       name: name,
       username: username,      
       password: password,
