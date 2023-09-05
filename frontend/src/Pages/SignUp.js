@@ -2,8 +2,6 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -19,9 +17,7 @@ import ButtonAppBar from '../components/ButtonAppBar';
 
 export default function SignUp() {
 
-
   const {signup, error, isLoading} = useSignup()
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,30 +29,8 @@ export default function SignUp() {
       roomcode: data.get('Room Code')
     });
 
-    await signup(data.get('Name'), 
-                 data.get('User Name'),
-                 data.get('password'),
-                 data.get('Room Code'))
-
-    // axios.post('http://localhost:3001/api/signup', {
-    //   name: data.get('Name'),
-    //   username: data.get('User Name'),      
-    //   password: data.get('password'),
-    // })
-    // .then((response) => {
-    //   console.log(response)
-    //   // redirect to different page?
-    //   window.location.replace(
-    //     "http://localhost:3000/createjoinroom",
-    //   );
-    // })
-    // .catch((error) => {
-    //   console.log(error.response.data.error)
-    //   //TODO include ui to alert user
-
-    // })
-    
-  };
+    await signup(data.get('Name'), data.get('User Name'), data.get('password'), data.get('Room Code'))
+  }
 
   return (
     <>
@@ -115,10 +89,6 @@ export default function SignUp() {
               type="Room Code"
               id="Room Code"
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Button
               type="submit"
               fullWidth
@@ -129,11 +99,6 @@ export default function SignUp() {
               Sign Up
             </Button>
             <Grid container>
-              {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
               <Grid item>
                 <Link href="/signin" variant="body2">
                   {"Already have an account? Sign In"}

@@ -1,3 +1,6 @@
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const Room = require('../models/room')
@@ -13,7 +16,7 @@ usersRouter.put('/', (request, response) => {
             response.json(updatedNote)
         })
         .catch(error => console.log(error))
-  })
+     })
 
 
 usersRouter.post('/signup', async (req, res) => {

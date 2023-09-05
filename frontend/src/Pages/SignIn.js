@@ -2,8 +2,6 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -11,34 +9,23 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import axios from 'axios';
-import { AppBar } from '@mui/material';
 import ButtonAppBar from '../components/ButtonAppBar';
 import { useSignin } from '../hooks/useSignIn';
 
 
 export default function SignIn() {
-  const {signin, error, isLoading} = useSignin()  
+    const {signin, error, isLoading} = useSignin()  
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('User Name'),
-      password: data.get('password'),
-    });
-    // axios.post('http://localhost:3001/api/signin', { "username": data.get('User Name'), "password": data.get('password')})
-    // .then((response) => {
-    //   console.log('successfully logged in')
-    //   console.log(response.status)
-    // })
-    // .catch((error) => {
-    //   console.log(error)
-    // })
+    const handleSubmit = async (event) => {
+      event.preventDefault()
+      const data = new FormData(event.currentTarget);
+      console.log({
+        username: data.get('User Name'),
+        password: data.get('password'),
+      })
 
-    await signin(data.get('Name'), 
-    data.get('User Name'),
-    data.get('password'))
-  };
+    await signin(data.get('Name'), data.get('User Name'), data.get('password'))
+  }
 
   return (
     <>
@@ -79,10 +66,6 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Button
               type="submit"
               fullWidth
@@ -93,11 +76,6 @@ export default function SignIn() {
               Sign In
             </Button>
             <Grid container>
-              {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
               <Grid item>
                 <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -108,7 +86,6 @@ export default function SignIn() {
         </Box>
       <Typography>{error}</Typography>
       </Container>
-      
       </>
-  );
+  )
 }

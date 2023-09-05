@@ -11,14 +11,11 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import Groups3SharpIcon from '@mui/icons-material/Groups3Sharp';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { Button, ListItemButton, ListItemIcon, ListItemText, TextField, Select, MenuItem } from '@mui/material';
@@ -26,23 +23,9 @@ import { Button, ListItemButton, ListItemIcon, ListItemText, TextField, Select, 
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
-import ButtonAppBar from '../components/ButtonAppBar';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
 import TaskTable from '../components/TaskTable';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -90,7 +73,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
@@ -101,10 +84,6 @@ export default function Dashboard() {
     setOpen(!open);
   };
   const [tasks, setTasks] = useState([])
-
-  var frequency = null
-
-// console.log(JSON.parse(user))
 
 const handleSubmit = (event) => {
   event.preventDefault()
@@ -128,8 +107,6 @@ const handleSubmit = (event) => {
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-
-
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
@@ -174,15 +151,8 @@ const handleSubmit = (event) => {
             {user &&
             <Button color="inherit"> {JSON.parse(user).username} </Button>
           }       
-            {/* <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
           </Toolbar>
         </AppBar>
-
-
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -198,21 +168,16 @@ const handleSubmit = (event) => {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <ListItemButton href='/addTasks'>
+            {/* <ListItemButton href='/addTasks'>
               <ListItemIcon>
                 <TaskAltIcon/>
               </ListItemIcon>
               <ListItemText>
                 Add tasks
               </ListItemText>
-            </ListItemButton>
-            {/* {mainListItems} TODO THIS WILL BE THE OPTIONS MENU*/}
-            {/* <Divider sx={{ my: 1 }} />
-            {secondaryListItems} */}
+            </ListItemButton> */}
           </List>
         </Drawer>
-
-
         <Box
           component="main"
           sx={{
@@ -227,47 +192,13 @@ const handleSubmit = (event) => {
         >
           <Toolbar />
 
-
-
-
-
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
-              {/* <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Chart /> 
-                </Paper>
-              </Grid> */}
-              {/* Recent Deposits */}
-              {/* <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                   <Deposits /> 
-                </Paper>
-              </Grid> */}
-              {/* Recent Orders CHANGE TO TASKS */}
-
-
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   {user &&
                     <TaskTable tasks={tasks} setTasks={setTasks} roomcode={JSON.parse(user).roomcode}/>
-                   }       
-                  
+                   }                         
                 </Paper>
               </Grid>
               <Grid item xs={12}>
@@ -275,36 +206,35 @@ const handleSubmit = (event) => {
                   <Typography> Add a task</Typography>
                   <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
-              variant='standard'
-              margin="normal"
-              required
-              fullWidth
-              id="Task"
-              label="Task"
-              name="Task"
-              autoComplete="Task"
-              autoFocus
-              />
-              <TextField
-              variant='standard'
-              margin="normal"
-              required
-              fullWidth
-              id="Description"
-              label="Description of the task"
-              name="Description"
-              autoComplete="Description"
-              />
-              <TextField
-              id="frequency"
-              select
-              label="Frequency"
-              name='Frequency'
-              defaultValue= {7}
-              helperText="Please select the frequency of the task"
-              variant="standard"
-              fullWidth>
-          
+                  variant='standard'
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="Task"
+                  label="Task"
+                  name="Task"
+                  autoComplete="Task"
+                  autoFocus
+                  />
+                <TextField
+                  variant='standard'
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="Description"
+                  label="Description of the task"
+                  name="Description"
+                  autoComplete="Description"
+                />
+                <TextField
+                  id="frequency"
+                  select
+                  label="Frequency"
+                  name='Frequency'
+                  defaultValue= {7}
+                  helperText="Please select the frequency of the task"
+                  variant="standard"
+                  fullWidth>
             <MenuItem value={7}>
               weekly
             </MenuItem>
@@ -316,19 +246,13 @@ const handleSubmit = (event) => {
             </MenuItem>
         </TextField>
         <Button variant='outlined' type='submit' sx={{mt: 2}}> Add task</Button>
-
-
             </Box>
                 </Paper>
               </Grid>
-              
-
-              
             </Grid>
-            {/* <Copyright sx={{ pt: 4 }} /> */}
           </Container>
         </Box>
       </Box>
     </ThemeProvider>
-  );
+  )
 }

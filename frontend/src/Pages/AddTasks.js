@@ -31,19 +31,6 @@ import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
 import TaskTable from '../components/TaskTable';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -191,8 +178,6 @@ export default function AddTask() {
             {secondaryListItems} */}
           </List>
         </Drawer>
-
-
         <Box
           component="main"
           sx={{
@@ -206,48 +191,8 @@ export default function AddTask() {
           }}
         >
           <Toolbar />
-
-
-
-
-
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
-              {/* <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Chart /> 
-                </Paper>
-              </Grid> */}
-              {/* Recent Deposits */}
-              {/* <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                   <Deposits /> 
-                </Paper>
-              </Grid> */}
-              {/* Recent Orders CHANGE TO TASKS */}
-
-
-              {/* <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <TaskTable />
-                </Paper>
-              </Grid> */}
-
             <Box component="form" onSubmit={()=> {}} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -270,10 +215,7 @@ export default function AddTask() {
               autoFocus
             />    
             </Box>       
-
-              
             </Grid>
-            {/* <Copyright sx={{ pt: 4 }} /> */}
           </Container>
         </Box>
       </Box>

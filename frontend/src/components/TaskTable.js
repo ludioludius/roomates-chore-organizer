@@ -53,22 +53,16 @@ export default function TaskTable(props) {
 
           <TableHead>
             <TableRow>
-              {/* <TableCell>Date</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Ship To</TableCell>
-              <TableCell>Payment Method</TableCell>
-              <TableCell align="right">Sale Amount</TableCell> */}
-              <TableCell> ID </TableCell>
               <TableCell> task name </TableCell>
-              <TableCell></TableCell>
+              <TableCell> frequency</TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
             {tasks.map((task) => (
               <TableRow key={task.id}>
-                <TableCell>{task.id}</TableCell>
                 <TableCell>{task.name}</TableCell>
+                <TableCell>once every {task.frequency} days</TableCell>
                 <TableCell> 
                     <Button onClick={() => deleteTask(task.id)}>
                         Delete task

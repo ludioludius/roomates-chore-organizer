@@ -3,7 +3,6 @@ import Home from './Pages/Home'
 import SignUp from "./Pages/SignUp";
 import SignIn from "./Pages/SignIn";
 import Dashboard from "./Pages/Dashboard";
-import AddTask from "./Pages/AddTasks";
 import { CssBaseline } from "@mui/material";
 
 
@@ -18,12 +17,10 @@ function App() {
           <Route path="/signin" exact element={<SignIn/>}/> 
           <Route path="/signup" exact element={<SignUp/>}/>
           <Route path="/dashboard" exact element={<Dashboard />}/>
-          <Route path="/addtasks" exact element={<AddTask/>}/>
         </Routes>
       </BrowserRouter>
-      
     </div>
-  );
+  )
 }
 
 export default App;
