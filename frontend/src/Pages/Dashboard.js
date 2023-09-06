@@ -204,11 +204,11 @@ const handleSubmit = (event) => {
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Typography> Add a task</Typography>
-                  <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                  <Box component="form" onSubmit={handleSubmit} required  sx={{ mt: 1 }}>
                 <TextField
                   variant='standard'
                   margin="normal"
-                  required
+                  required={true}
                   fullWidth
                   id="Task"
                   label="Task"
@@ -219,7 +219,7 @@ const handleSubmit = (event) => {
                 <TextField
                   variant='standard'
                   margin="normal"
-                  required
+                  required={true}
                   fullWidth
                   id="Description"
                   label="Description of the task"
@@ -230,6 +230,7 @@ const handleSubmit = (event) => {
                   id="frequency"
                   select
                   label="Frequency"
+                  required={true}
                   name='Frequency'
                   defaultValue= {7}
                   helperText="Please select the frequency of the task"

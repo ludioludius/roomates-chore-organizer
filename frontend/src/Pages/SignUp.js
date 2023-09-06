@@ -50,7 +50,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit}  sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -82,10 +82,9 @@ export default function SignUp() {
             />
             <TextField
               margin="normal"
-              required
               fullWidth
               name="Room Code"
-              label="Room Code"
+              label="Room Code (leave empty to generate a new room)"
               type="Room Code"
               id="Room Code"
             />
