@@ -144,8 +144,8 @@ const handleSubmit = (event) => {
               Chorify
             </Typography>
             {!user && <Button color="inherit" href='/signin'>Sign In</Button>}
-            <Button color="inherit">Home</Button>
-            <Button color="inherit">FAQs</Button>
+            <Button color="inherit" href="/home">Home</Button>
+            {/* <Button color="inherit">FAQs</Button> */}
             {user && <Button color="inherit" href='/dashboard'> Dashboard </Button>}
             <Button color="inherit" onClick={() => logout()}> Log out </Button>
             {user &&
@@ -202,7 +202,8 @@ const handleSubmit = (event) => {
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+              {user &&
+              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Typography> Add a task</Typography>
                   <Box component="form" onSubmit={handleSubmit} required  sx={{ mt: 1 }}>
                 <TextField
@@ -248,7 +249,7 @@ const handleSubmit = (event) => {
         </TextField>
         <Button variant='outlined' type='submit' sx={{mt: 2}}> Add task</Button>
             </Box>
-                </Paper>
+                </Paper>}
               </Grid>
             </Grid>
           </Container>

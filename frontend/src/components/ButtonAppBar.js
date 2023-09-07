@@ -30,8 +30,8 @@ export default function ButtonAppBar() {
             Chorify
           </Typography>
           {!user && <Button color="inherit" href='/signin'>Sign In</Button>}
-          <Button color="inherit">Home</Button>
-          <Button color="inherit">FAQs</Button>
+          <Button color="inherit" href="/home">Home</Button>
+          {/* <Button color="inherit">FAQs</Button> */}
           {user && <Button color="inherit" href='/dashboard'> Dashboard </Button>}
           <Button color="inherit" onClick={() => logout()}> Log out </Button>
           {user &&
