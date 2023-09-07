@@ -18,6 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Groups3SharpIcon from '@mui/icons-material/Groups3Sharp';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
 import { Button, ListItemButton, ListItemIcon, ListItemText, TextField, Select, MenuItem } from '@mui/material';
 // import { mainListItems, secondaryListItems } from './listItems';
 // import Chart from './Chart';
@@ -168,14 +169,22 @@ const handleSubmit = (event) => {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {/* <ListItemButton href='/addTasks'>
+             <ListItemButton href='/dashboard'>
               <ListItemIcon>
                 <TaskAltIcon/>
               </ListItemIcon>
               <ListItemText>
-                Add tasks
+                Tasks
               </ListItemText>
-            </ListItemButton> */}
+            </ListItemButton>
+            <ListItemButton href='/purchases'>
+              <ListItemIcon>
+                <AttachMoneySharpIcon/>
+              </ListItemIcon>
+              <ListItemText>
+                Purchases
+              </ListItemText>
+            </ListItemButton>
           </List>
         </Drawer>
         <Box

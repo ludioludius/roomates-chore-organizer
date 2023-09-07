@@ -21,6 +21,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Groups3SharpIcon from '@mui/icons-material/Groups3Sharp';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
 import { Button, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
 // import { mainListItems, secondaryListItems } from './listItems';
 // import Chart from './Chart';
@@ -80,7 +81,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function AddTask() {
+export default function Purchases() {
   const { logout } = useLogout()
   const { user } = useAuthContext()
   const [open, setOpen] = useState(true);
@@ -88,7 +89,6 @@ export default function AddTask() {
     setOpen(!open);
   };
 
-// console.log(JSON.parse(user))
 
 
   return (
@@ -134,18 +134,13 @@ export default function AddTask() {
               Chorify
             </Typography>
             {!user && <Button color="inherit" href='/signin'>Sign In</Button>}
-            <Button color="inherit">Home</Button>
-            <Button color="inherit">FAQs</Button>
+            <Button color="inherit" href="home">Home</Button>
+            {/* <Button color="inherit">FAQs</Button> */}
             {user && <Button color="inherit" href='/dashboard'> Dashboard </Button>}
             <Button color="inherit" onClick={() => logout()}> Log out </Button>
             {user &&
             <Button color="inherit"> {JSON.parse(user).username} </Button>
           }       
-            {/* <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
           </Toolbar>
         </AppBar>
 
@@ -165,12 +160,20 @@ export default function AddTask() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <ListItemButton href='/addtasks'>
+            <ListItemButton href='/dashboard'>
               <ListItemIcon>
                 <TaskAltIcon/>
               </ListItemIcon>
               <ListItemText>
-                Add tasks
+                Tasks
+              </ListItemText>
+            </ListItemButton>
+            <ListItemButton href='/purchases'>
+              <ListItemIcon>
+                <AttachMoneySharpIcon/>
+              </ListItemIcon>
+              <ListItemText>
+                Purchases
               </ListItemText>
             </ListItemButton>
             {/* {mainListItems} TODO THIS WILL BE THE OPTIONS MENU*/}
