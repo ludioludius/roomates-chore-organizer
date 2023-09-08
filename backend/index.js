@@ -9,6 +9,7 @@ require('dotenv').config()
 //contollers
 const tasksRouter = require('./controllers/tasks')
 const usersRouter = require('./controllers/users')
+const purchaseRouter = require('./controllers/purchases')
 
 
 //middleware
@@ -20,6 +21,7 @@ app.use(cors())
 const Task = require('./models/task')
 const User = require('./models/user')
 const Room = require('./models/room')
+const Purchase = require('./models/purchase')
 
 
 mongoose.set('strictQuery', false)
@@ -32,7 +34,7 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('error connecting to MongoDB')
 })
 
-
+app.use('/api/purchases', purchaseRouter)
 app.use('/api/tasks', tasksRouter)
 app.use('/api/users', usersRouter)
 
