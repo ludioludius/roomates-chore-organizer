@@ -18,6 +18,8 @@ export default function TaskTable(props) {
     const roomcode = props.roomcode
     console.log(roomcode)
 
+    
+
     const deletePurchase = (id) => {
         axios.delete(`http://localhost:3001/api/purchases/${id}`)
         .then(response => {
@@ -66,7 +68,10 @@ export default function TaskTable(props) {
                 <TableCell>{purchase.description}</TableCell>
                 <TableCell>{purchase.cost}</TableCell>
                 <TableCell>{purchase.buyer}</TableCell>
-                <TableCell>{purchase.purchaseDate}</TableCell>
+                <TableCell>
+                            {(new Date(purchase.purchaseDate)).getMonth() + 1}/
+                            {(new Date(purchase.purchaseDate)).getFullYear()}
+                </TableCell>
                 <TableCell> 
                     <Button onClick={() => deletePurchase(purchase.id)}>
                         Delete Purchase
