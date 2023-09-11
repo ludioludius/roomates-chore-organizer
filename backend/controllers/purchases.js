@@ -4,11 +4,11 @@ const Purchase = require('../models/purchase.js')
 
 purchaseRouter.post('/', async (req, res) => {
 
-    const {name, description, cost, buyer, purchaseDate, roomcode} =  req.body
+    const {item, description, cost, buyer, purchaseDate, roomcode} =  req.body
     console.log(req.body)
 
     
-    const newPurchase = new Purchase({name, description, cost, buyer, purchaseDate})
+    const newPurchase = new Purchase({item, description, cost, buyer, purchaseDate})
     const room = await Room.findById(roomcode)
     console.log(room)
 
@@ -20,7 +20,7 @@ purchaseRouter.post('/', async (req, res) => {
             console.log(response)
         })
         .catch(e => {
-            res.json({error: "problem creating the new task"})
+            res.json({error: "problem creating the new purchase"})
             console.log(e)
         })
 })

@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 
 const purchaseSchema = mongoose.Schema({
-    name: {
+    item: {
         type: String,
         required: true
     },
     description: String,
     cost: Number,
     buyer: String,
-    purchaseDate: Date
+    purchaseDate: Date,
 })
 
 purchaseSchema.set('toJSON', {

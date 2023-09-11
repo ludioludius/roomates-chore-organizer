@@ -11,27 +11,18 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import Groups3SharpIcon from '@mui/icons-material/Groups3Sharp';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
-import { Button, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material';
-// import { mainListItems, secondaryListItems } from './listItems';
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
-import ButtonAppBar from '../components/ButtonAppBar';
+import { Button, ListItemButton, ListItemIcon, ListItemText, TextField, MenuItem} from '@mui/material';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
-import TaskTable from '../components/TaskTable';
-
+import PurchaseTable from '../components/PurchaseTable'
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -88,6 +79,36 @@ export default function Purchases() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const [purchases, setPurchases] = useState([])
+
+  //TODO: remove number and just use indexing
+  const months = ["January", "Febuary", "March", 
+               "April", "May", "June",
+                "July", "August", "September",
+                "October", "November","December"]
+
+  const years = [2023, 2024]
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget);
+    console.log(data.get('item'), data.get('description'), data.get('cost'),
+    data.get('month'), data.get('year'))
+    console.log(JSON.parse(user).roomcode)
+
+    const purchaseDate = new Date(data.get('year'), data.get('month'))
+    console.log(purchaseDate)
+
+    axios.post('http://localhost:3001/api/purchases', {item: data.get('item'), description: data.get('description'), cost: data.get('cost'),
+                                                      buyer: JSON.parse(user).name , purchaseDate: new Date(data.get('year'), data.get('month')), roomcode: JSON.parse(user).roomcode})
+    .then((response) => {
+      console.log(response.data)
+      setPurchases(purchases.concat(response.data))
+    })
+    .catch((e) => {
+      console.log(e)
+    })
+  }
 
 
 
@@ -176,9 +197,6 @@ export default function Purchases() {
                 Purchases
               </ListItemText>
             </ListItemButton>
-            {/* {mainListItems} TODO THIS WILL BE THE OPTIONS MENU*/}
-            {/* <Divider sx={{ my: 1 }} />
-            {secondaryListItems} */}
           </List>
         </Drawer>
         <Box
@@ -194,30 +212,93 @@ export default function Purchases() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+
+
+
+          <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-            <Box component="form" onSubmit={()=> {}} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="Name"
-              label="Name"
-              name="Name"
-              autoComplete="Name"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="User Name"
-              label="User Name"
-              name="User Name"
-              autoComplete="User Name"
-              autoFocus
-            />    
-            </Box>       
+            <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  {user &&
+                    <PurchaseTable purchases={purchases} setPurchases={setPurchases} roomcode={JSON.parse(user).roomcode}/>
+                   }                         
+                </Paper>
+              </Grid>
+            <Grid item xs={12}>
+              {user &&
+              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <Typography> Record a purchase</Typography>
+                  <Box component="form" onSubmit={handleSubmit} required  sx={{ mt: 1 }}>
+                <TextField
+                  variant='standard'
+                  margin="normal"
+                  required={true}
+                  fullWidth
+                  id="item"
+                  label="Item purchased"
+                  name="item"
+                  autoComplete="item"
+                  autoFocus
+                  />
+                <TextField
+                  variant='standard'
+                  margin="normal"
+                  fullWidth
+                  id="description"
+                  label="Description"
+                  name="description"
+                  autoComplete="Description"
+                />
+                <TextField
+                  id="cost"
+                  label="Cost"
+                  required={true}
+                  type="number"
+                  name='cost'
+                  variant="standard"
+                  fullWidth>
+                </TextField>
+                <TextField
+                  id="month"
+                  select
+                  label="Month purchased"
+                  required={true}
+                  name='month'
+                  defaultValue= {9}
+                  variant="standard"
+                  fullWidth
+                  sx={{my: 2}}
+                  >
+                {months.map((month, index) => {
+                  return (
+                    <MenuItem key={index} value={index}>
+                      {month}
+                    </MenuItem>
+                  )
+                })}
+                </TextField>
+                <TextField
+                  id="year"
+                  select
+                  label="Year purchased"
+                  required={true}
+                  name='year'
+                  variant="standard"
+                  defaultValue= {2023}
+                  fullWidth
+                  >
+                {years.map((year, index) => {
+                  return (
+                    <MenuItem key={index} value={year}>
+                      {year}
+                    </MenuItem>
+                  )
+                })}
+                </TextField>
+        <Button variant='outlined' type='submit' sx={{mt: 2}}> Record Purchase</Button>
+            </Box>
+                </Paper>}
+              </Grid>
             </Grid>
           </Container>
         </Box>
