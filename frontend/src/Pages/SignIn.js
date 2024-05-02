@@ -12,9 +12,14 @@ import axios from 'axios';
 import ButtonAppBar from '../components/ButtonAppBar';
 import { useSignin } from '../hooks/useSignIn';
 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+const auth = getAuth();
+
 
 export default function SignIn() {
-    const {signin, error, isLoading} = useSignin()  
+    const {signin, error, isLoading} = useSignin()
+
 
     const handleSubmit = async (event) => {
       event.preventDefault()
@@ -24,7 +29,19 @@ export default function SignIn() {
         password: data.get('password'),
       })
 
-    await signin(data.get('Name'), data.get('User Name'), data.get('password'))
+        createUserWithEmailAndPassword(auth, String(data.get('User Name')), String(data.get('password')))
+            .then((userCredential) => {
+                // Signed up
+                const user = userCredential.user;
+
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+            });
+
+    // await signin(data.get('Name'), data.get('User Name'), data.get('password'))
   }
 
   return (
