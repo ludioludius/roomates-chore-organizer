@@ -11,8 +11,24 @@ import Container from '@mui/material/Container';
 import axios from 'axios';
 import { useSignup } from '../hooks/useSignUp';
 import ButtonAppBar from '../components/ButtonAppBar';
+// TODO: ADD form verificaiton for sign up inputs
 
-// API address hardcoded temporarily
+// Firebase
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {Password} from "@mui/icons-material";
+
+// Firebase project configuration object; found on firebase console
+const firebaseConfig = {
+  apiKey: "AIzaSyAsP60E4L_v-KNsVosofJhXVhCzELPHNI4",
+  authDomain: "roommates-chore-organizer.firebaseapp.com",
+  projectId: "roommates-chore-organizer",
+  storageBucket: "roommates-chore-organizer.appspot.com",
+  messagingSenderId: "811791432329",
+  appId: "1:811791432329:web:55ac975dc3a1a80f22e458"
+};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
 
 export default function SignUp() {
@@ -21,15 +37,39 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('Name'),
-      username: data.get('User Name'),      
-      password: data.get('password'),
-      roomcode: data.get('Room Code')
-    });
 
-    await signup(data.get('Name'), data.get('User Name'), data.get('password'), data.get('Room Code'))
+    // Extract data from form
+    const data = new FormData(event.currentTarget);
+    const Name = String(data.get("Name"));
+    const Email = String(data.get("Email"));
+    const Password = String(data.get("Password"));
+    console.log("Creating User", { Name: Name, Email: Email });
+
+    // Create a user with firebase
+    const auth = getAuth();
+    await createUserWithEmailAndPassword(auth, Email, Password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          return updateProfile(user, {displayName: `${Name}`})
+        })
+        .then(()=> {
+          console.log("User created with firebase");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode);
+          console.log(errorMessage);
+          return signup(null, false, errorMessage);
+          // TODO: call sign in hook with error, modify UseSignUp appropriately
+        }).then(() => {
+          console.log("Error handled (if any)");
+        });
+
+
+    // TODO: Use the sign up hook to modify auth context
+
+    //await signup(data.get('Name'), data.get('User Name'), data.get('password'), data.get('Room Code'))
   }
 
   return (
@@ -65,28 +105,19 @@ export default function SignUp() {
               margin="normal"
               required
               fullWidth
-              id="User Name"
-              label="User Name"
-              name="User Name"
-              autoComplete="User Name"
+              id="Email"
+              label="Email"
+              name="Email"
+              autoComplete="Email"
             />            
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
+              name="Password"
               label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              name="Room Code"
-              label="Room Code (leave empty to generate a new room)"
-              type="Room Code"
-              id="Room Code"
+              type="Password"
+              id="Password"
             />
             <Button
               type="submit"
