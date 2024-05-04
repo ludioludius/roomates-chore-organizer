@@ -15,7 +15,7 @@ import ButtonAppBar from '../components/ButtonAppBar';
 
 // Firebase
 import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification} from "firebase/auth";
 import {Password} from "@mui/icons-material";
 
 // Firebase project configuration object; found on firebase console
@@ -47,23 +47,32 @@ export default function SignUp() {
 
     // Create a user with firebase
     const auth = getAuth();
+    let user = null;
     await createUserWithEmailAndPassword(auth, Email, Password)
         .then((userCredential) => {
-          const user = userCredential.user;
-          return updateProfile(user, {displayName: `${Name}`})
+            user = userCredential.user;
+            return updateProfile(user, {displayName: `${Name}`})
         })
         .then(()=> {
-          console.log("User created with firebase");
+            console.log("User created with firebase");
+            return sendEmailVerification(auth.currentUser);
+        })
+        .then(() => {
+            console.log("email verification sent");
+            return auth.currentUser.getIdToken(true);
+        })
+        .then((idToken) => {
+            return signup(idToken, true, null);
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode);
-          console.log(errorMessage);
-          return signup(null, false, errorMessage);
-          // TODO: call sign in hook with error, modify UseSignUp appropriately
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
+            return signup(null, false, errorMessage);
+            // TODO: call sign in hook with error, modify UseSignUp appropriately
         }).then(() => {
-          console.log("Error handled (if any)");
+            console.log("Error handled (if any)");
         });
 
 
