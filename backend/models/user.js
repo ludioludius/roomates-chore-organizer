@@ -2,14 +2,11 @@ const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
 const userSchema = mongoose.Schema({
-
-  username: {
+  uid: {
     type: String,
     required: true,
     unique: true
   },
-  name: String,
-  passwordHash: String,
   roomcode:
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -22,8 +19,6 @@ userSchema.set('toJSON', {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v
-      //added to hide password hash
-      delete returnedObject.passwordHash
     }
   })
 
