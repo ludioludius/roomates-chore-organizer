@@ -28,17 +28,31 @@ usersRouter.put('/', (request, response) => {
      })
 
 
-usersRouter.post('/signup', async (req, res) => {
+usersRouter.post('/signup', (req, res) => {
     console.log(req.body)
     var {idToken} = req.body
 
     admin.auth().verifyIdToken(idToken)
         .then((decodedToken) => {
+            // create and save user with no room assigned
             const uid = decodedToken.uid;
+            console.log(uid);
             const user = new User({uid: uid});
+            console.log(user);
             return user.save()})
-        .then(() => {
-            console.log("user verified")
+        .then((decodedToken) => {
+            console.log("user verified and saved")
+            console.log(decodedToken)
+            const userForToken = {
+                email: decodedToken.email,
+                uid: decodedToken.uid,
+            }
+            console.log(userForToken);
+            const token = jwt.sign(userForToken, process.env.SECRET)
+            res.status(200)
+                .send({ token, emial: decodedToken.email, uid: decodedToken.uid, hasRoom: false})})
+        .catch((error) => {
+            console.log(error)
         })
 
     //     const saltRounds = 10
