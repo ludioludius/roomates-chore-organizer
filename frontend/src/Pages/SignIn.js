@@ -12,19 +12,40 @@ import axios from 'axios';
 import ButtonAppBar from '../components/ButtonAppBar';
 import { useSignin } from '../hooks/useSignIn';
 
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+const auth = getAuth();
+
 
 export default function SignIn() {
-    const {signin, error, isLoading} = useSignin()  
+    const {signin, error, isLoading} = useSignin()
+
 
     const handleSubmit = async (event) => {
-      event.preventDefault()
-      const data = new FormData(event.currentTarget);
-      console.log({
-        username: data.get('User Name'),
-        password: data.get('password'),
-      })
+        event.preventDefault()
+        const data = new FormData(event.currentTarget);
+        const Email = String(data.get("Email"));
+        const Password = String(data.get("Password"));
 
-    await signin(data.get('Name'), data.get('User Name'), data.get('password'))
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, Email, Password)
+            .then((userCredential) => {
+                // Signed in
+                console.log("user signed in with firebase");
+                const user = userCredential.user;
+                return user.getIdToken(true);
+            })
+            .then((idToken) => {
+                return signin(idToken, true, null);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode);
+                console.log(errorMessage);
+                return signin(null, false, errorMessage);
+            });
+
   }
 
   return (
@@ -50,21 +71,20 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="User Name"
-              label="User Name"
-              name="User Name"
-              autoComplete="User Name"
+              id="Email"
+              label="Email"
+              name="Email"
+              autoComplete="Email"
               autoFocus
             />            
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
+              name="Password"
               label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              type="Password"
+              id="Password"
             />
             <Button
               type="submit"

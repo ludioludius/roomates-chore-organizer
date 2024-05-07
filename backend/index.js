@@ -9,7 +9,8 @@ require('dotenv').config()
 //contollers
 const tasksRouter = require('./controllers/tasks')
 const usersRouter = require('./controllers/users')
-const purchaseRouter = require('./controllers/purchases')
+const purchasesRouter = require('./controllers/purchases')
+const roomsRouter = require('./controllers/rooms')
 
 
 //middleware
@@ -34,9 +35,10 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('error connecting to MongoDB')
 })
 
-app.use('/api/purchases', purchaseRouter)
+app.use('/api/purchases', purchasesRouter)
 app.use('/api/tasks', tasksRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/rooms', roomsRouter)
 
 
 app.listen(process.env.PORT, () => {

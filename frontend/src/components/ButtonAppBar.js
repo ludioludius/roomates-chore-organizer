@@ -33,10 +33,7 @@ export default function ButtonAppBar() {
           <Button color="inherit" href="/home">Home</Button>
           {/* <Button color="inherit">FAQs</Button> */}
           {user && <Button color="inherit" href='/dashboard'> Dashboard </Button>}
-          <Button color="inherit" onClick={() => logout()}> Log out </Button>
-          {user &&
-          <Button color="inherit"> {JSON.parse(user).username} </Button>
-          }       
+            {user && <Button color="inherit" onClick={() => logout()}> Log out </Button>}
         </Toolbar>
         </Container>
       </AppBar>

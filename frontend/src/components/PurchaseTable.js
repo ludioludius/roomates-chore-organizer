@@ -15,13 +15,13 @@ export default function TaskTable(props) {
     const purchases = props.purchases
     const setPurchases = props.setPurchases
 
-    const roomcode = props.roomcode
-    console.log(roomcode)
+    const roomName = props.roomName
+    console.log(roomName)
 
     
 
-    const deletePurchase = (id) => {
-        axios.delete(`http://localhost:3001/api/purchases/${id}`)
+    const deletePurchase = (id, roomName) => {
+        axios.delete(`http://localhost:3001/api/purchases/${id}/${roomName}`)
         .then(response => {
           setPurchases(purchases.filter((task) => task.id !== id))
           console.log(response)
@@ -33,7 +33,7 @@ export default function TaskTable(props) {
 
     const fetchPurchaseData = () => {
       console.log('effect hook being run state:', purchases)
-      axios.get(`http://localhost:3001/api/purchases/${roomcode}`)
+      axios.get(`http://localhost:3001/api/purchases/${roomName}`)
       .then((response) => {
         setPurchases(response.data)
       })
@@ -73,7 +73,7 @@ export default function TaskTable(props) {
                             {(new Date(purchase.purchaseDate)).getFullYear()}
                 </TableCell>
                 <TableCell> 
-                    <Button onClick={() => deletePurchase(purchase.id)}>
+                    <Button onClick={() => deletePurchase(purchase.id, roomName)}>
                         Delete Purchase
                     </Button>
                 </TableCell>

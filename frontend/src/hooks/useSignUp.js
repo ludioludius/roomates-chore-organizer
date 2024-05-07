@@ -5,35 +5,35 @@ import axios from 'axios'
 export const useSignup = () => {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(null)
-  const { dispatch } = useAuthContext()
+  const {dispatch} = useAuthContext()
 
-  const signup = async (name, username, password, roomcode) => {
-    setIsLoading(true)
-    setError(null)
+  const signup = async (idToken, isSuccessful, errorMessage) => {
 
-    axios.post('http://localhost:3001/api/users/signup', {
-      name: name,
-      username: username,      
-      password: password,
-      roomcode: roomcode
-    })
-    .then((response) => {
-      const json = JSON.stringify(response.data)
-      console.log('response from hoook', response.data)
-      // store response data in the browser (includes token)
-      localStorage.setItem('user', json)
-
-      //update AuthContext
-      dispatch( {type: 'LOGIN', payload: json })
+    // if previous error in user creation
+    if (!isSuccessful) {
       setIsLoading(false)
+      setError(errorMessage)
+    } else {
+      axios.post('http://localhost:3001/api/users/signup', {
+        idToken: idToken
+      })
+          .then((response) => {
+            const json = JSON.stringify(response.data)
+            console.log('response from hook', response.data)
+            //store response data in the browser (includes token)
+            localStorage.setItem('user', json)
 
-    })
-    .catch((e) => {
-      console.log(e)
-      setIsLoading(false)
-      setError(e.response.data.error)
-    })
+            //update AuthContext
+            dispatch({type: 'LOGIN', payload: json})
+            setIsLoading(false)
+          })
+          .catch((e) => {
+            console.log(e)
+            setIsLoading(false)
+            setError(e.response.data.error)
+          })
+    }
   }
 
-  return { signup, isLoading, error}
-}
+      return { signup, isLoading, error}
+  }

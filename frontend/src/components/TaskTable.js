@@ -16,12 +16,12 @@ export default function TaskTable(props) {
     const tasks = props.tasks
     const setTasks = props.setTasks
 
-    const roomcode = props.roomcode
-    console.log(roomcode)
+    const roomName = props.roomName
+    console.log(roomName)
 
-    const deleteTask = (id) => {
+    const deleteTask = (id, roomName) => {
         console.log('send request to change data then change state')
-        axios.delete(`http://localhost:3001/api/tasks/${id}`)
+        axios.delete(`http://localhost:3001/api/tasks/${id}/${roomName}`)
         .then(response => {
           setTasks(tasks.filter((task) => task.id !== id))
           console.log(response)
@@ -33,7 +33,7 @@ export default function TaskTable(props) {
 
     const fetchTaskData = () => {
       console.log('effect hook being run state:', tasks)
-      axios.get(`http://localhost:3001/api/tasks/${roomcode}`)
+      axios.get(`http://localhost:3001/api/tasks/${roomName}`)
       .then((response) => {
         setTasks(response.data)
       })
@@ -64,7 +64,7 @@ export default function TaskTable(props) {
                 <TableCell>{task.name}</TableCell>
                 <TableCell>once every {task.frequency} days</TableCell>
                 <TableCell> 
-                    <Button onClick={() => deleteTask(task.id)}>
+                    <Button onClick={() => deleteTask(task.id, roomName)}>
                         Delete task
                     </Button>
                 </TableCell>

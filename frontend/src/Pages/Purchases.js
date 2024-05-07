@@ -94,13 +94,13 @@ export default function Purchases() {
     const data = new FormData(event.currentTarget);
     console.log(data.get('item'), data.get('description'), data.get('cost'),
     data.get('month'), data.get('year'))
-    console.log(JSON.parse(user).roomcode)
+    console.log(JSON.parse(user).roomName)
 
     const purchaseDate = new Date(data.get('year'), data.get('month'))
     console.log(purchaseDate)
 
     axios.post('http://localhost:3001/api/purchases', {item: data.get('item'), description: data.get('description'), cost: data.get('cost'),
-                                                      buyer: JSON.parse(user).name , purchaseDate: new Date(data.get('year'), data.get('month')), roomcode: JSON.parse(user).roomcode})
+                                                      buyer: JSON.parse(user).name , purchaseDate: new Date(data.get('year'), data.get('month')), roomName: JSON.parse(user).roomName})
     .then((response) => {
       console.log(response.data)
       setPurchases(purchases.concat(response.data))
@@ -220,7 +220,7 @@ export default function Purchases() {
             <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   {user &&
-                    <PurchaseTable purchases={purchases} setPurchases={setPurchases} roomcode={JSON.parse(user).roomcode}/>
+                    <PurchaseTable purchases={purchases} setPurchases={setPurchases} roomName={JSON.parse(user).roomName}/>
                    }                         
                 </Paper>
               </Grid>
