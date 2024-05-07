@@ -20,8 +20,8 @@ export default function TaskTable(props) {
 
     
 
-    const deletePurchase = (id) => {
-        axios.delete(`http://localhost:3001/api/purchases/${id}`)
+    const deletePurchase = (id, roomName) => {
+        axios.delete(`http://localhost:3001/api/purchases/${id}/${roomName}`)
         .then(response => {
           setPurchases(purchases.filter((task) => task.id !== id))
           console.log(response)
@@ -73,7 +73,7 @@ export default function TaskTable(props) {
                             {(new Date(purchase.purchaseDate)).getFullYear()}
                 </TableCell>
                 <TableCell> 
-                    <Button onClick={() => deletePurchase(purchase.id)}>
+                    <Button onClick={() => deletePurchase(purchase.id, roomName)}>
                         Delete Purchase
                     </Button>
                 </TableCell>
