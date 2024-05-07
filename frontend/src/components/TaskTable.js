@@ -16,8 +16,8 @@ export default function TaskTable(props) {
     const tasks = props.tasks
     const setTasks = props.setTasks
 
-    const roomcode = props.roomcode
-    console.log(roomcode)
+    const roomName = props.roomName
+    console.log(roomName)
 
     const deleteTask = (id) => {
         console.log('send request to change data then change state')
@@ -33,7 +33,7 @@ export default function TaskTable(props) {
 
     const fetchTaskData = () => {
       console.log('effect hook being run state:', tasks)
-      axios.get(`http://localhost:3001/api/tasks/${roomcode}`)
+      axios.get(`http://localhost:3001/api/tasks/${roomName}`)
       .then((response) => {
         setTasks(response.data)
       })

@@ -4,15 +4,15 @@ const Purchase = require('../models/purchase.js')
 
 purchaseRouter.post('/', async (req, res) => {
 
-    const {item, description, cost, buyer, purchaseDate, roomcode} =  req.body
+    const {item, description, cost, buyer, purchaseDate, roomName} =  req.body
     console.log(req.body)
 
     
     const newPurchase = new Purchase({item, description, cost, buyer, purchaseDate})
-    const room = await Room.findById(roomcode)
+    const room = await Room.findOne({name: roomName})
     console.log(room)
 
-    await Room.findOneAndUpdate({_id: roomcode}, {purchases: room.purchases.concat(newPurchase)})
+    await Room.findOneAndUpdate({name: roomName}, {purchases: room.purchases.concat(newPurchase)})
 
     newPurchase.save()
         .then(response => {
@@ -25,13 +25,13 @@ purchaseRouter.post('/', async (req, res) => {
         })
 })
 
-purchaseRouter.get('/:roomcode', async (req, res) => {
+purchaseRouter.get('/:roomName', async (req, res) => {
 
-    const roomcode = req.params.roomcode
-    console.log('Roomcode: ', roomcode)
+    const roomName = req.params.roomName
+    console.log('roomName: ', roomName)
 
     //returns an array
-    const roomWithPurchases = await Room.find({_id: roomcode}).populate('purchases')
+    const roomWithPurchases = await Room.find({name: roomName}).populate('purchases')
 
     console.log(roomWithPurchases[0].purchases)
     res.json(roomWithPurchases[0].purchases)

@@ -77,11 +77,19 @@ usersRouter.post('/signin', async (req, res) => {
             }
             console.log(userForToken);
             const token = jwt.sign(userForToken, process.env.SECRET)
-            console.log(Object.keys(user));
-            if (Object.keys(user).includes("roomcode")) {
+            let userObject = user.toObject()
+            if (Object.keys(userObject).includes("roomcode")) {
+                // find the room name that the user is in
+                console.log("USER HAS ROOMCODE");
+                let room = await Room.findOne({_id: userObject["roomcode"]});
+                if (!room) {
+                    return res.status(404).json({error: 'Room not found'});
+                }
+                const roomName = room.name;
                 res.status(200)
-                    .send({ token, email: decodedToken.email, uid: decodedToken.uid, hasRoom: true})
+                    .send({ token, email: decodedToken.email, uid: decodedToken.uid, hasRoom: true, roomName: roomName})
             } else {
+                console.log("USER NO HAS ROOMCODE");
                 res.status(200)
                     .send({ token, email: decodedToken.email, uid: decodedToken.uid, hasRoom: false})
             }

@@ -15,8 +15,8 @@ export default function TaskTable(props) {
     const purchases = props.purchases
     const setPurchases = props.setPurchases
 
-    const roomcode = props.roomcode
-    console.log(roomcode)
+    const roomName = props.roomName
+    console.log(roomName)
 
     
 
@@ -33,7 +33,7 @@ export default function TaskTable(props) {
 
     const fetchPurchaseData = () => {
       console.log('effect hook being run state:', purchases)
-      axios.get(`http://localhost:3001/api/purchases/${roomcode}`)
+      axios.get(`http://localhost:3001/api/purchases/${roomName}`)
       .then((response) => {
         setPurchases(response.data)
       })

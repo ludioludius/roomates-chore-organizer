@@ -1,15 +1,16 @@
 const tasksRouter = require('express').Router()
 const Task = require('../models/task.js')
 const Room = require('../models/room.js')
+const User = require("../models/user");
 
 
-tasksRouter.get('/:roomcode', async (req, res) => {
+tasksRouter.get('/:roomName', async (req, res) => {
 
-    const roomcode = req.params.roomcode
-    console.log('Roomcode: ', roomcode)
+    const name = req.params.roomName
+    console.log('roomName: ', name)
 
     //returns an array
-    const roomWithTasks = await Room.find({_id: roomcode}).populate('tasks')
+    const roomWithTasks = await Room.find({name: name}).populate('tasks')
 
     console.log(roomWithTasks[0].tasks)
     res.json(roomWithTasks[0].tasks)
@@ -19,6 +20,7 @@ tasksRouter.get('/:roomcode', async (req, res) => {
 tasksRouter.delete('/:id', (req, res) => {
 
     const id = req.params.id
+    console.log(id)
 
     Task.findByIdAndDelete(id)
         .then(response => {
@@ -32,15 +34,15 @@ tasksRouter.delete('/:id', (req, res) => {
 
 tasksRouter.post('/', async (req, res) => {
 
-    const {name, description, frequency, roomcode} =  req.body
+    const {name, description, frequency, roomName} =  req.body
     console.log(req.body)
     console.log(name, description, frequency)
     
     const newTask = new Task({name, description, frequency})
-    const room = await Room.findById(roomcode)
+    let room = await Room.findOne({name: roomName});
     console.log(room)
 
-    await Room.findOneAndUpdate({_id: roomcode}, {tasks: room.tasks.concat(newTask)})
+    await Room.findOneAndUpdate({name: roomName}, {tasks: room.tasks.concat(newTask)})
 
     newTask.save()
         .then(response => {

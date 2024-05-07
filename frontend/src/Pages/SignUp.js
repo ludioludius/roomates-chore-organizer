@@ -8,7 +8,6 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import axios from 'axios';
 import { useSignup } from '../hooks/useSignUp';
 import ButtonAppBar from '../components/ButtonAppBar';
 // TODO: ADD form verificaiton for sign up inputs
@@ -16,7 +15,6 @@ import ButtonAppBar from '../components/ButtonAppBar';
 // Firebase
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification} from "firebase/auth";
-import {Password} from "@mui/icons-material";
 
 // Firebase project configuration object; found on firebase console
 const firebaseConfig = {
@@ -29,7 +27,6 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 
 export default function SignUp() {
 
@@ -74,9 +71,6 @@ export default function SignUp() {
         });
 
 
-    // TODO: Use the sign up hook to modify auth context
-
-    //await signup(data.get('Name'), data.get('User Name'), data.get('password'), data.get('Room Code'))
   }
 
   return (
