@@ -30,7 +30,7 @@ usersRouter.put('/', (request, response) => {
 
 usersRouter.post('/signup', (req, res) => {
     console.log(req.body)
-    var {idToken} = req.body
+    let {idToken} = req.body
 
     admin.auth().verifyIdToken(idToken)
         .then((decodedToken) => {
@@ -50,93 +50,45 @@ usersRouter.post('/signup', (req, res) => {
             console.log(userForToken);
             const token = jwt.sign(userForToken, process.env.SECRET)
             res.status(200)
-                .send({ token, emial: decodedToken.email, uid: decodedToken.uid, hasRoom: false})})
+                .send({ token, email: decodedToken.email, uid: decodedToken.uid, hasRoom: false})})
         .catch((error) => {
             console.log(error)
         })
-
-    //     const saltRounds = 10
-    //     const passwordHash = await bcrypt.hash(password, saltRounds)
-    //
-    //     try {
-    //          var valid = await Room.findById(roomcode)
-    //     }
-    //     catch(e) {
-    //         valid = null
-    //     }
-    //
-    //     if (roomcode === "") {
-    //         //case where roomcode needs to be set
-    //         var room = new Room()
-    //         roomcode = room._id
-    //          console.log("ROOM CREATED", room)
-    //     } else if (!valid) {
-    //         // return error
-    //         return res.status(400).send({
-    //             error: 'invalid room code'
-    //          })
-    //     } else {
-    //         // case where roomcode is valid
-    //         var room = await Room.findOne({_id: roomcode})
-    //     }
-    //
-    //     const user = new User({
-    //         username,
-    //         name,
-    //         passwordHash,
-    //         roomcode
-    //      })
-    //
-    //     await room.save()
-    //
-    //     console.log(user)
-    //
-    //     user.save()
-    //         .then( async (response) => {
-    //             console.log(response)
-    //
-    //             const userForToken = {
-    //                 username: user.username,
-    //                 id: user._id,
-    //             }
-    //
-    //             const token = jwt.sign(userForToken, process.env.SECRET)
-    //
-    //             res
-    //                 .status(200)
-    //                 .send({ token, username: user.username, name: user.name, roomcode: user.roomcode, id: user._id})
-    //         })
-    //         .catch((error) => {
-    //             console.log(error)
-    //             res.status(401).json({error: "username must be unique"})
-    //         })
 })
 
 
 usersRouter.post('/signin', async (req, res) => {
-    const {name, username, password} = req.body
+    console.log(req.body)
+    let {idToken} = req.body
 
-    const user = await User.findOne({ username })
-    const passwordCorrect = user === null?
-    false
-    : await bcrypt.compare(password, user.passwordHash)
+    admin.auth().verifyIdToken(idToken)
+        .then(async (decodedToken) => {
+            // find the user
+            const uid = decodedToken.uid;
+            let user = await User.findOne({uid: uid});
+            if (!user) {
+                return res.status(404).json({error: 'User not found'});
+            }
 
-  if (!(user && passwordCorrect)) {
-    return res.status(401).json({
-      error: 'invalid username or password'
-    })
-  }
-
-  const userForToken = {
-    username: user.username,
-    id: user._id,
-  }
-
-  const token = jwt.sign(userForToken, process.env.SECRET)
-
-  res
-    .status(200)
-    .send({ token, username: user.username, name: user.name, roomcode: user.roomcode, id: user._id})
+            // check if user has a room assigned to it
+            const userForToken = {
+                email: decodedToken.email,
+                uid: decodedToken.uid,
+            }
+            console.log(userForToken);
+            const token = jwt.sign(userForToken, process.env.SECRET)
+            console.log(Object.keys(user));
+            if (Object.keys(user).includes("roomcode")) {
+                res.status(200)
+                    .send({ token, email: decodedToken.email, uid: decodedToken.uid, hasRoom: true})
+            } else {
+                res.status(200)
+                    .send({ token, email: decodedToken.email, uid: decodedToken.uid, hasRoom: false})
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 })
 
 module.exports = usersRouter

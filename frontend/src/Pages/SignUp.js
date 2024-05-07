@@ -71,8 +71,6 @@ export default function SignUp() {
             console.log(errorMessage);
             return signup(null, false, errorMessage);
             // TODO: call sign in hook with error, modify UseSignUp appropriately
-        }).then(() => {
-            console.log("Error handled (if any)");
         });
 
 

@@ -56,6 +56,7 @@ function UserLoggedIn() {
 
     let userState = JSON.parse(localStorage.getItem('user'));
     console.log(typeof userState.hasRoom);
+    console.log(userState.hasRoom);
 
   return (
       <>
