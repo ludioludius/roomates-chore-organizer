@@ -78,13 +78,32 @@ function UserLoggedIn() {
 }
 
 function JoinRoom() {
+    const {dispatch} = useAuthContext()
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+            roomName: data.get('room'),
         });
+        const roomName = String(data.get('room'));
+        let userState = JSON.parse(localStorage.getItem('user'));
+        console.log(typeof userState.uid);
+        axios.patch(`http://localhost:3001/api/rooms/joinRoom/${userState.uid}/${roomName}`)
+            .then((response) => {
+                //change user context
+                //store response data in the browser (includes token)
+                let newUserState = JSON.parse(localStorage.getItem('user'));
+                newUserState.hasRoom = true;
+                newUserState.roomName = String(data.get('room'));
+                localStorage.setItem('user', JSON.stringify(newUserState));
+
+                //update AuthContext
+                dispatch({type: 'LOGIN', payload: JSON.stringify(newUserState)})
+            })
+            .catch(error => {
+                console.log(error);
+            })
     };
 
     return (
@@ -107,10 +126,10 @@ function JoinRoom() {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="room"
+                            label="Room Name"
+                            name="room"
+                            autoComplete="room"
                             autoFocus
                         />
                         <Button
@@ -162,8 +181,6 @@ function CreateRoom() {
             .catch(error => {
                 console.log(error);
             })
-
-
     };
 
     return (
