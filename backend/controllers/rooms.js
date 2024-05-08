@@ -23,11 +23,11 @@ roomsRouter.post('/createRoom/:uid/:roomName', async (req, res) => {
     user.roomcode = roomId; // TODO: Refactor this to camel case
     await user.save();
 
-    // create a new field called room name that identifies a room for the users
+    // add a room name and update rooms users
     room.name = roomName;
+    room.users = room.users.concat(user._id);
     await room.save();
 
-    // TODO: add the current user into the room
 
     // return the room name for the newly created room
     res.status(200).send({roomName: roomName});
@@ -48,14 +48,17 @@ roomsRouter.patch('/joinRoom/:uid/:roomName', async (req, res) => {
 
     // find the room associated with the roomName
     let room = await Room.findOne({name: roomName});
-    const roomId = room._id;
     if (!room) {
         return res.status(404).json({error: 'Room not found'});
     }
 
     // set the users room code to point to that room and save the user
-    user.roomcode = roomId; // TODO: Refactor this to camel case
+    user.roomcode = room._id; // TODO: Refactor this to camel case
     await user.save();
+
+    // add user to room
+    room.users = room.users.concat(user._id);
+    await room.save();
 
     res.status(200).send();
 })
