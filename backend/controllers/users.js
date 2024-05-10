@@ -142,7 +142,7 @@ async function getWeeklyUser(uid, weekId, room) {
     return roomWithChoreList.choreList.filter(choreAssignment => {
         console.log(choreAssignment.week);
         console.log(weekId);
-        return choreAssignment.week === weekId
+        return choreAssignment.week === weekId && choreAssignment.assignedUser === uid;
     });
 }
 
