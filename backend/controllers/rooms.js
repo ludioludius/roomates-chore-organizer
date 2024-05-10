@@ -94,8 +94,8 @@ async function choreListCreator(tasks, users, numWeeks) {
     const choreList = [];
     let weekOfMonth = -1; // number between 0 and 3 for keeping track of monthly and biweekly tasks
 
+    let week = getWeekIdentifier(new Date()); // Get week identifier for the current week
     for (let i = 0; i < numWeeks; i++) {
-        const week = getWeekIdentifier(new Date()); // Get week identifier for the current week
         const assignments = [];
 
         // update weekOfMonth
@@ -172,17 +172,11 @@ async function choreListCreator(tasks, users, numWeeks) {
             }
 
             choreList.push(...assignments);
+            // update week identifier
+            week = getWeekIdentifier(getDateWeeksAhead(i));
         }
 
         return choreList;
-}
-
-// Function to shuffle array elements (Fisher-Yates shuffle)
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
 }
 
 // Function to calculate the week identifier for a given date
@@ -196,6 +190,25 @@ function getWeekIdentifier(date) {
     const weekNumber = Math.ceil((daysOfYear + daysOffset + 1) / 7);
     return `${year}-W${weekNumber}`;
 }
+
+function getDateWeeksAhead(numWeeks) {
+    // Get the current date
+    let currentDate = new Date();
+
+    let dateSevenDaysAhead = new Date(currentDate);
+    dateSevenDaysAhead.setDate(currentDate.getDate() + (7 * numWeeks));
+
+    return dateSevenDaysAhead;
+}
+
+// Function to shuffle array elements (Fisher-Yates shuffle)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
 
 
 module.exports = roomsRouter
