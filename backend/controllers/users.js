@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
 const Room = require('../models/room');
+const Task = require('../models/task');
 const ChoreAssignment = require('../models/choreAssignment');
 const { initializeApp } = require('firebase-admin/app');
 const {auth} = require("firebase-admin");
@@ -137,13 +138,19 @@ usersRouter.get('/getWeeklySchedule/:uid/:weekId', async (req, res) => {
 
 async function getWeeklyUser(uid, weekId, room) {
     // populate the references
-    let roomWithChoreList = await room.populate('choreList');
-    console.log(roomWithChoreList.choreList);
-    return roomWithChoreList.choreList.filter(choreAssignment => {
-        console.log(choreAssignment.week);
-        console.log(weekId);
+    await room.populate('choreList');
+    let filteredChoreList = room.choreList.filter(choreAssignment => {
         return choreAssignment.week === weekId && choreAssignment.assignedUser === uid;
     });
+    let taskList = [];
+    console.log(filteredChoreList);
+    for (const choreAssignment of filteredChoreList) {
+        console.log(choreAssignment);
+        let task = await Task.findById(choreAssignment.chore); // Access chore directly
+        console.log(task);
+        taskList.push(task);
+    }
+    return taskList;
 }
 
 module.exports = usersRouter

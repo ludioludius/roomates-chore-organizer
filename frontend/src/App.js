@@ -18,6 +18,7 @@ import Avatar from "@mui/material/Avatar";
 import PeopleIcon from '@mui/icons-material/People';
 import * as React from "react";
 import axios from "axios";
+import Schedule from "./Pages/Schedule";
 
 
 function App() {
@@ -45,6 +46,7 @@ function NoUserLoggedIn() {
                 <Route path="/purchases" exact element= {<SignIn/>}/>
                 <Route path="/createRoom" exact element= {<SignIn/>}/>
                 <Route path="/joinRoom" exact element= {<SignIn/>}/>
+                <Route path="/schedule" exact element= {<Schedule/>}/>
             </Routes>
         </BrowserRouter>
       </>
@@ -68,7 +70,8 @@ function UserLoggedIn() {
           <Route path="/signin" exact element={userState.hasRoom? <Navigate to="/dashboard"/> : <JoinRoom/>}/>
           <Route path="/signup" exact element={userState.hasRoom? <Navigate to="/dashboard"/> : <JoinRoom/>}/>
           <Route path="/dashboard" exact element={userState.hasRoom? <Dashboard /> : <Navigate to="/signin"/>} />
-          <Route path="/purchases" exact element= {userState.hasRoom? <Purchases /> : <Navigate to="/signin"/>}/>
+          <Route path="/purchases" exact element= {userState.hasRoom? <Purchases /> :<SignIn />}/>
+            <Route path="/schedule" exact element={userState.hasRoom? <Schedule /> : <Navigate to="/signin"/>} />
             <Route path="/createRoom" exact element= {userState.hasRoom? <Dashboard /> : <CreateRoom/>}/>
             <Route path="/joinRoom" exact element= {userState.hasRoom? <Dashboard /> : <JoinRoom/>}/>
         </Routes>

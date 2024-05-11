@@ -23,6 +23,7 @@ import { Button, ListItemButton, ListItemIcon, ListItemText, TextField, MenuItem
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
 import PurchaseTable from '../components/PurchaseTable'
+import {CalendarMonthSharp} from "@mui/icons-material";
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -195,6 +196,14 @@ export default function Purchases() {
               </ListItemIcon>
               <ListItemText>
                 Purchases
+              </ListItemText>
+            </ListItemButton>
+            <ListItemButton href='/schedule'>
+              <ListItemIcon>
+                <CalendarMonthSharp/>
+              </ListItemIcon>
+              <ListItemText>
+                Schedule
               </ListItemText>
             </ListItemButton>
           </List>
