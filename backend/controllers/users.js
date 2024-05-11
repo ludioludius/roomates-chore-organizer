@@ -1,9 +1,11 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const usersRouter = require('express').Router()
-const User = require('../models/user')
-const Room = require('../models/room')
+const usersRouter = require('express').Router();
+const User = require('../models/user');
+const Room = require('../models/room');
+const Task = require('../models/task');
+const ChoreAssignment = require('../models/choreAssignment');
 const { initializeApp } = require('firebase-admin/app');
 const {auth} = require("firebase-admin");
 
@@ -98,5 +100,57 @@ usersRouter.post('/signin', async (req, res) => {
             console.log(error)
         })
 })
+
+
+
+// return the tasks due for the current week for the requesting user
+usersRouter.get('/getWeeklySchedule/:uid/:weekId', async (req, res) => {
+    console.log("endpoint hit");
+    const uid = req.params.uid;
+    const weekId = req.params.weekId;
+
+    // get the users chore schedule
+    let user = await User.findOne({uid: uid});
+    if (!user) {
+        return res.status(404).json({error: 'User not found'});
+    }
+    let userObject = user.toObject();
+    if (Object.keys(userObject).includes("roomcode")) {
+        // find the room name that the user is in
+        let room = await Room.findOne({_id: userObject["roomcode"]});
+        if (!room) {
+            return res.status(404).json({error: 'Room not found'});
+        }
+        let roomObject = room.toObject();
+        if (Object.keys(roomObject).includes("choreList")) { // check if a chore list has been assigned
+            let weeklySchedule =  await getWeeklyUser(uid, weekId,  room);
+            console.log(weeklySchedule);
+            res.status(200)
+                .send({weeklySchedule: weeklySchedule});
+        } else {
+            return res.status(404).json({error: 'chore list not found'});
+        }
+    } else {
+        res.status(404)
+            .json({error: 'user not assigned a room yet'});
+    }
+})
+
+async function getWeeklyUser(uid, weekId, room) {
+    // populate the references
+    await room.populate('choreList');
+    let filteredChoreList = room.choreList.filter(choreAssignment => {
+        return choreAssignment.week === weekId && choreAssignment.assignedUser === uid;
+    });
+    let taskList = [];
+    console.log(filteredChoreList);
+    for (const choreAssignment of filteredChoreList) {
+        console.log(choreAssignment);
+        let task = await Task.findById(choreAssignment.chore); // Access chore directly
+        console.log(task);
+        taskList.push(task);
+    }
+    return taskList;
+}
 
 module.exports = usersRouter

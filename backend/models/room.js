@@ -11,13 +11,24 @@ const roomSchema = mongoose.Schema({
           ref: 'Task'
         }
     ],
+    choreList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ChoreAssignment'
+        }
+    ],
     purchases: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Purchase'
-      }
-  ],
-  
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Purchase'
+        }
+        ],
+    users: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ]
 })
 
 roomSchema.set('toJSON', {

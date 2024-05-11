@@ -20,13 +20,10 @@ import Groups3SharpIcon from '@mui/icons-material/Groups3Sharp';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AttachMoneySharpIcon from '@mui/icons-material/AttachMoneySharp';
 import { Button, ListItemButton, ListItemIcon, ListItemText, TextField, Select, MenuItem } from '@mui/material';
-// import { mainListItems, secondaryListItems } from './listItems';
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
 import TaskTable from '../components/TaskTable';
+import {CalendarMonthSharp} from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -183,6 +180,14 @@ const handleSubmit = (event) => {
               </ListItemIcon>
               <ListItemText>
                 Purchases
+              </ListItemText>
+            </ListItemButton>
+            <ListItemButton href='/schedule'>
+              <ListItemIcon>
+                <CalendarMonthSharp/>
+              </ListItemIcon>
+              <ListItemText>
+                Schedule
               </ListItemText>
             </ListItemButton>
           </List>
